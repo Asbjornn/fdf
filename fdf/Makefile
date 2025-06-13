@@ -13,7 +13,7 @@ LIBFT_A		= ${LIBFT_DIR}/libft.a
 PRINFT_A	= ${PRINTF_DIR}/libftprintf.a
 MINILIBX_A	= ${MINILIBX_DIR}/libmlx_Linux.a
 
-SRCS    	= fdf.c
+SRCS    	= fdf.c draw.c parse.c
 
 SRCS_BONUS	= 
 
