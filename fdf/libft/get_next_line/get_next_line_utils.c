@@ -6,13 +6,13 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:08:19 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/10 14:08:17 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/14 11:41:35 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr_gnl(const char *s, int c)
 {
 	unsigned int	i;
 	unsigned char	c_bis;
