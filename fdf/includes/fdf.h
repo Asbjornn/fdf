@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:24:30 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/16 10:33:38 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/24 14:10:10 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,57 @@
 # include "../libft/includes/ft_printf.h"
 # include "../libft/includes/get_next_line.h"
 # include "../libft/includes/libft.h"
+# include "../minilibx-linux/mlx.h"
+# include "../minilibx-linux/mlx_int.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-// # include "../minilibx-linux/mlx.h"
-// # include "../minilibx-linux/mlx_int.h"
+# include <math.h>
 
-# define ESCAPE 65307
-
-typedef struct s_data
-{
-	void	*mlx;
-	void	*win;
-}			t_data;
-
-typedef struct s_coor
-{
-	int		x;
-	int		y;
-	int		z;
-}			t_coor;
+# define ESCAPE		65307
+# define WIN_LENGTH	1920
+# define WIN_HEIGHT	1080
+# define ISO_ANGLE	30
 
 typedef struct s_map
 {
 	int		height;
 	int		width;
+	int		x_offset;
+	int		y_offset;
+	int		zoom;
 	int		**tab;
 }			t_map;
 
-void	draw_line(int x1, int y1, int x2, int y2, t_data data);
+typedef struct s_point
+{
+	int		x;
+	int		x2;
+	int		y;
+	int		y2;
+	int		err;
+	int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
+}			t_point;
+
+
+typedef struct s_data
+{
+	void	*mlx;
+	void	*win;
+	t_map	*map;
+}			t_data;
+
+// void	draw_line(int x1, int y1, int x2, int y2, t_data *data);
+void	draw_map_top(t_data *data);
+void	draw_map_iso(t_data *data);
 
 t_map	*parse(int argc, char *argv[]);
+
+void	display_error(char *message, int fd);
+void	free_tab(char **tab);
+void	free_map(t_map **map);
 
 #endif

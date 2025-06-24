@@ -11,9 +11,9 @@ DIR_O		= file_o
 
 LIBFT_A		= ${LIBFT_DIR}/libft.a
 PRINFT_A	= ${PRINTF_DIR}/libftprintf.a
-# MINILIBX_A	= ${MINILIBX_DIR}/libmlx_Linux.a
+MINILIBX_A	= ${MINILIBX_DIR}/libmlx_Linux.a
 
-SRCS    	= fdf.c draw.c parse.c
+SRCS    	= fdf.c draw.c parse.c error_manager.c
 
 SRCS_BONUS	= 
 
@@ -33,25 +33,24 @@ file_o/%.o: %.c | $(DIR_O)
 	@${CC} ${CFLAGS} -I ${INCS_DIR} -c $< -o $@
 
 # -lX11 -lXext -lm
-
 ${NAME}: ${OBJ}
-	@${MAKE} -C ${LIBFT_DIR}
-	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${PRINFT_A} ${MINILIBX_A} -o ${NAME}
+	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${PRINFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME}
 	@echo -e "${GREEN}COMPILATION SUCEED"
 
 bonus: ${OBJ_BONUS}
-	@${MAKE} -C ${LIBFT_DIR}
-	@${CC} ${CFLAGS} ${OBJ_BONUS} ${LIBFT_A} ${PRINFT_A} ${MINILIBX_A} -o ${NAME}
+	@${CC} ${CFLAGS} ${OBJ_BONUS} ${LIBFT_A} ${PRINFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME}
 	@echo -e "${GREEN}COMPILATION SUCEED"
+
+lib:
+	@${MAKE} -C ${LIBFT_DIR}
+	@${MAKE} -C ${LIBFT_DIR} clean
 
 clean:
 	@rm -rf $(DIR_O)
-	@${MAKE} -C ${LIBFT_DIR} clean
 	@echo -e "${GREEN}ALL IS CLEAN"
 
 fclean: clean
 	@rm -f ${NAME}
-	@${MAKE} -C ${LIBFT_DIR} fclean
 
 re: fclean all
 
