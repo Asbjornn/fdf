@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/24 16:17:55 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:16:39 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ int	close_window(void *param)
 	data = (t_data *)param;
 	free_map(&data->map);
 	mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	free(data);
 	exit (0);
 	return (0);
 }
@@ -32,6 +35,9 @@ int	get_key(int keycode, void *param)
 	{
 		free_map(&data->map);
 		mlx_destroy_window(data->mlx, data->win);
+		mlx_destroy_display(data->mlx);
+		free(data->mlx);
+		free(data);
 		exit (0);
 	}
 	return (0);
@@ -68,8 +74,9 @@ int	main(int argc, char *argv[])
 	data->map = parse(argc, argv);
 	(*data).mlx = mlx_init();
 	(*data).win = mlx_new_window((*data).mlx, WIN_LENGTH, WIN_HEIGHT, "fdf");
-	draw_map_top(data);
+	// draw_map_top(data);
 	// draw_map_iso(data);
+	bressenham(data);
 	mlx_key_hook((*data).win, get_key, data);
 	mlx_hook((*data).win, 17, 0, close_window, data);
 	mlx_loop((*data).mlx);

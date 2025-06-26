@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:17:33 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/24 16:01:34 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/26 12:56:11 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,16 @@ static void	iso_projection(t_data *data, t_point **point, int i, int j)
 	int	x2;
 	int	y2;
 
-	x = j * 50 + data->map->x_offset;
-	y = i * 50 + data->map->y_offset;
-	(*point)->x = (x - y) * cos(ISO_ANGLE);
-	(*point)->y = (x - y) * sin(ISO_ANGLE) - data->map->tab[i][j];
-	x2 = (j + 1) * 50 + data->map->x_offset;
-	y2 = (i + 1) * 50 + data->map->y_offset;
-	(*point)->x2 = (x2 - y2) * cos(ISO_ANGLE);
-	(*point)->y2 = (x2 - y2) * sin(ISO_ANGLE) - data->map->tab[i][j];
+	x = j * 50;
+	y = i * 50;
+	(*point)->x = ((x - y) * cos(0.523599)) + data->map->x_offset;
+	(*point)->y = (x + y) * sin(0.523599) - data->map->tab[i][j];
+	(*point)->y += data->map->y_offset;
+	x2 = (j + 1) * 50;
+	y2 = (i + 1) * 50;
+	(*point)->x2 = ((x2 - y2) * cos(0.523599)) + data->map->x_offset;
+	(*point)->y2 = (x2 + y2) * sin(0.523599) - data->map->tab[i][j + 1];
+	(*point)->y2 += data->map->y_offset;
 }
 
 void	do_bresenham(t_data *data, t_point *point)
@@ -144,6 +146,21 @@ void	do_bresenham(t_data *data, t_point *point)
 		point->sy = 1;
 	else
 		point->sy = -1;
+	while (point->x != point->x2 || point->y != point->y2)
+	{
+		mlx_pixel_put(data->mlx, data->win, point->x, point->y, 0xFFFFFF);
+		point->err2 = 2 * point->err;
+		if (point->err2 > -point->dy)
+		{
+			point->err -= point->dy;
+			point->x += point->sx;
+		}
+		if (point->err2 < point->dx)
+		{
+			point->err += point->dx;
+			point->y += point->sy;
+		}
+	}
 }
 
 void	draw_map_iso(t_data *data)
@@ -156,18 +173,18 @@ void	draw_map_iso(t_data *data)
 	point = malloc(sizeof(t_point));
 	if (!point)
 		display_error("malloc point failed", 2);
-	while (i < data->map->height - 1)
+	while (i < data->map->height)
 	{
 		j = 0;
-		while (j < data->map->width - 1)
+		while (j < data->map->width)
 		{
 			iso_projection(data, &point, i, j);
 			do_bresenham(data, point);
-			mlx_pixel_put(data->mlx, data->win, point->x, point->y, 0xFFFFFF);
-			mlx_pixel_put(data->mlx, data->win, point->x2, point->y2, 0xFFFFFF);
 			j++;
 		}
 		i++;
 	}
 	free(point);
 }
+
+
