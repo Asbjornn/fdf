@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:17:33 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/26 12:56:11 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/27 13:15:11 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	do_line(t_data *data, t_point *point, int i, int j)
 	if (j < data->map->width - 1)
 	{
 		temp_x = point->x;
-		point->x2 = (j + 1) * 50 + data->map->x_offset;
 		while (temp_x != point->x2)
 		{
 			mlx_pixel_put(data->mlx, data->win, temp_x, point->y, 0x00FF0000);
@@ -78,7 +77,6 @@ static void	do_line(t_data *data, t_point *point, int i, int j)
 	}
 	if (i < data->map->height - 1)
 	{
-		point->y2 = (i + 1) * 50 + data->map->y_offset;
 		while (point->y != point->y2)
 		{
 			mlx_pixel_put(data->mlx, data->win, point->x, point->y, 0x0000FFFF);
@@ -114,7 +112,7 @@ void	draw_map_top(t_data *data)
 	free(point);
 }
 
-static void	iso_projection(t_data *data, t_point **point, int i, int j)
+static void	iso_projection_test(t_data *data, t_point **point, int i, int j)
 {
 	int	x;
 	int	y;
@@ -149,13 +147,13 @@ void	do_bresenham(t_data *data, t_point *point)
 	while (point->x != point->x2 || point->y != point->y2)
 	{
 		mlx_pixel_put(data->mlx, data->win, point->x, point->y, 0xFFFFFF);
-		point->err2 = 2 * point->err;
-		if (point->err2 > -point->dy)
+		point->err = 2 * point->err;
+		if (point->err > -point->dy)
 		{
 			point->err -= point->dy;
 			point->x += point->sx;
 		}
-		if (point->err2 < point->dx)
+		if (point->err < point->dx)
 		{
 			point->err += point->dx;
 			point->y += point->sy;
@@ -178,7 +176,7 @@ void	draw_map_iso(t_data *data)
 		j = 0;
 		while (j < data->map->width)
 		{
-			iso_projection(data, &point, i, j);
+			iso_projection_test(data, &point, i, j);
 			do_bresenham(data, point);
 			j++;
 		}

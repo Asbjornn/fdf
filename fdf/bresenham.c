@@ -6,97 +6,77 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:04:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/26 16:24:11 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/27 14:28:57 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	iso_projection(t_data *data, t_point *point, int i, int j)
-{
-	int	x;
-	int	y;
-
-	x = j * 50;
-	y = i * 50;
-	point->x = ((x - y) * cos(0.523599)) + data->map->x_offset;
-	point->y = (x + y) * sin(0.523599) - data->map->tab[i][j];
-	point->y += data->map->y_offset;
-}
-
 static void	get_coor(t_point *point, t_point point2)
 {
-	point->dx = point2.x - point->x;
-	point->dy = point2.y - point->y;
+	point->dx = abs(point2.x - point->x);
+	point->dy = abs(point2.y - point->y);
 	point->err = point->dx - point->dy;
-	if (point->dx < 0)
-		point->sx = -1;
-	else
+	if (point->x < point2.x)
 		point->sx = 1;
-	if (point->sy < 0)
-		point->sy = -1;
 	else
+		point->sx = -1;
+	if (point->y < point2.y)
 		point->sy = 1;
+	else
+		point->sy = -1;
 }
 
-static void	draw_line_v(t_data *data, t_point point, t_point point2)
+static void	draw_line(t_data *data, t_point point, t_point point2, int color)
 {
-	int	x;
-
-	ft_printf("vertical\n");
-	if (point.y > point2.y)
+	get_coor(&point, point2);
+	while (1)
 	{
-		ft_swap(&point.x, &point2.x);
-		ft_swap(&point.y, &point2.y);
-	}
-	point.dx = point2.x - point.x;
-	point.dy = point2.y - point.y;
-	point.err = point.dx * 2 - point.dy;
-	x = point.x;
-	while (point.y != point2.y)
-	{
-		mlx_pixel_put(data->mlx, data->win, point.x, point.y, 0xFFFFFF);
-		if (point.err >= 0)
+		mlx_pixel_put(data->mlx, data->win, point.x, point.y, color);
+		if (point.x == point2.x && point.y == point2.y)
+			break ;
+		point.err2 = point.err * 2;
+		if (point.err2 > -point.dy)
 		{
-			x + point.sx;
-			point.err -= (point.dy * 2);
+			point.err -= point.dy;
+			point.x += point.sx;
 		}
-		point.err += (point.dy * 2);
-		point.y++;
+		if (point.err2 < point.dx)
+		{
+			point.err += point.dx;
+			point.y += point.sy;
+		}
 	}
 }
 
-static void	draw_line_h(t_data *data, t_point point, t_point point2)
+static void	last_line(t_data *data, t_point point, t_point point2, int color)
 {
-	int	y;
+	int	i;
+	int	j;
 
-	ft_printf("horizontal\n");
-	if (point.x > point2.x)
+	i = 0;
+	j = 0;
+	while (i < data->map->height - 1)
 	{
-		ft_swap(&point.x, &point2.x);
-		ft_swap(&point.y, &point2.y);
+		iso_projection(data, &point, i, data->map->width - 1);
+		iso_projection(data, &point2, i + 1, data->map->width - 1);
+		draw_line(data, point, point2, color);
+		i++;
 	}
-	point.dx = point2.x - point.x;
-	point.dy = point2.y - point.y;
-	point.err = point.dx * 2 - point.dy;
-	y = point.y;
-	while (point.x != point2.x)
+	while (j < data->map->width - 1)
 	{
-		mlx_pixel_put(data->mlx, data->win, point.x, point.y, 0xFFFFFF);
-		if (point.err >= 0)
-		{
-			y + point.sy;
-			point.err -= (point.dx * 2);
-		}
-		point.err += (point.dx * 2);
-		point.x++;
+		iso_projection(data, &point, data->map->height - 1, j);
+		iso_projection(data, &point2, data->map->height - 1, j + 1);
+		draw_line(data, point, point2, color);
+		j++;
 	}
 }
 
-void	bressenham(t_data *data)
+void	bressenham_iso(t_data *data)
 {
 	t_point	point;
 	t_point	point2;
+	int		color;
 	int		i;
 	int		j;
 
@@ -108,14 +88,104 @@ void	bressenham(t_data *data)
 		{
 			iso_projection(data, &point, i, j);
 			iso_projection(data, &point2, i + 1, j);
-			get_coor(&point, point2);
-			draw_line_h(data, point, point2);
+			if (data->map->tab[i][j] != 0)
+				color = 0x00FF00;
+			else
+				color = 0xFFFFFF;
+			draw_line(data, point, point2, color);
 			iso_projection(data, &point, i, j);
 			iso_projection(data, &point2, i, j + 1);
-			get_coor(&point, point2);
-			draw_line_v(data, point, point2);
+			if (data->map->tab[i][j] != 0)
+				color = 0x00FF00;
+			else
+				color = 0xFFFFFF;
+			draw_line(data, point, point2, color);
 			j++;
 		}
 		i++;
 	}
+	last_line(data, point, point2, color);
 }
+
+void	bressenham_top(t_data *data)
+{
+	t_point	point;
+	t_point	point2;
+	int		color;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < data->map->height - 1)
+	{
+		j = 0;
+		while (j < data->map->width - 1)
+		{
+			top_projection(data, &point, i, j);
+			top_projection(data, &point2, i + 1, j);
+			if (data->map->tab[i][j] != 0)
+				color = 0x00FF00;
+			else
+				color = 0xFFFFFF;
+			draw_line(data, point, point2, color);
+			top_projection(data, &point, i, j);
+			top_projection(data, &point2, i, j + 1);
+			if (data->map->tab[i][j] != 0)
+				color = 0x00FF00;
+			else
+				color = 0xFFFFFF;
+			draw_line(data, point, point2, color);
+			j++;
+		}
+		i++;
+	}
+	last_line(data, point, point2, color);
+}
+
+// =========================== OLD FUNCTIONS ============================
+// 
+// static void	draw_line_v(t_data *data, t_point point, t_point point2)
+// {
+// 	int	x;
+
+// 	if (point.y > point2.y)
+// 	{
+// 		ft_swap(&point.x, &point2.x);
+// 		ft_swap(&point.y, &point2.y);
+// 	}
+// 	x = point.x;
+// 	while (point.y != point2.y)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win, x, point.y, 0xFFFFFF);
+// 		if (point.err >= 0)
+// 		{
+// 			x += point.sx;
+// 			point.err -= (point.dy * 2);
+// 		}
+// 		point.err += (point.dy * 2);
+// 		point.y++;
+// 	}
+// }
+
+// static void	draw_line_h(t_data *data, t_point point, t_point point2)
+// {
+// 	int	y;
+
+// 	if (point.x > point2.x)
+// 	{
+// 		ft_swap(&point.x, &point2.x);
+// 		ft_swap(&point.y, &point2.y);
+// 	}
+// 	y = point.y;
+// 	while (point.x != point2.x)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win, point.x, y, 0xFFFFFF);
+// 		if (point.err >= 0)
+// 		{
+// 			y += point.sy;
+// 			point.err -= (point.dx * 2);
+// 		}
+// 		point.err += (point.dx * 2);
+// 		point.x++;
+// 	}
+// }
