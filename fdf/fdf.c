@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 16:16:54 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/06/27 16:22:56 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	main(int argc, char *argv[])
 	(*data).mlx = mlx_init();
 	(*data).win = mlx_new_window((*data).mlx, WIN_LENGTH, WIN_HEIGHT, "fdf");
 	// draw_map_top(data);
-	draw_map_iso(data);
-	// bressenham_iso(data);
+	// draw_map_iso(data);
+	bressenham_iso(data);
 	mlx_key_hook((*data).win, get_key, data);
 	mlx_mouse_hook((*data).win, get_mouse, data);
 	mlx_hook((*data).win, 17, 0, close_window, data);
