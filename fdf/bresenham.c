@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:04:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 14:28:57 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/01 13:23:10 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,16 @@ static void	get_coor(t_point *point, t_point point2)
 		point->sy = -1;
 }
 
-static void	draw_line(t_data *data, t_point point, t_point point2, int color)
+static void	draw_line(t_data *data, t_point point, t_point point2)
 {
+	int	i;
+
+	i = 0;
 	get_coor(&point, point2);
 	while (1)
 	{
-		mlx_pixel_put(data->mlx, data->win, point.x, point.y, color);
+		mlx_pixel_put(data->mlx, data->win, point.x, point.y,
+			test_colors(point, point2, i, data));
 		if (point.x == point2.x && point.y == point2.y)
 			break ;
 		point.err2 = point.err * 2;
@@ -46,10 +50,11 @@ static void	draw_line(t_data *data, t_point point, t_point point2, int color)
 			point.err += point.dx;
 			point.y += point.sy;
 		}
+		i++;
 	}
 }
 
-static void	last_line(t_data *data, t_point point, t_point point2, int color)
+static void	last_line(t_data *data, t_point point, t_point point2)
 {
 	int	i;
 	int	j;
@@ -60,14 +65,14 @@ static void	last_line(t_data *data, t_point point, t_point point2, int color)
 	{
 		iso_projection(data, &point, i, data->map->width - 1);
 		iso_projection(data, &point2, i + 1, data->map->width - 1);
-		draw_line(data, point, point2, color);
+		draw_line(data, point, point2);
 		i++;
 	}
 	while (j < data->map->width - 1)
 	{
 		iso_projection(data, &point, data->map->height - 1, j);
 		iso_projection(data, &point2, data->map->height - 1, j + 1);
-		draw_line(data, point, point2, color);
+		draw_line(data, point, point2);
 		j++;
 	}
 }
@@ -81,6 +86,7 @@ void	bressenham_iso(t_data *data)
 	int		j;
 
 	i = 0;
+	get_z_height(&(*data).map);
 	while (i < data->map->height - 1)
 	{
 		j = 0;
@@ -88,23 +94,15 @@ void	bressenham_iso(t_data *data)
 		{
 			iso_projection(data, &point, i, j);
 			iso_projection(data, &point2, i + 1, j);
-			if (data->map->tab[i][j] != 0)
-				color = 0x00FF00;
-			else
-				color = 0xFFFFFF;
-			draw_line(data, point, point2, color);
+			draw_line(data, point, point2);
 			iso_projection(data, &point, i, j);
 			iso_projection(data, &point2, i, j + 1);
-			if (data->map->tab[i][j] != 0)
-				color = 0x00FF00;
-			else
-				color = 0xFFFFFF;
-			draw_line(data, point, point2, color);
+			draw_line(data, point, point2);
 			j++;
 		}
 		i++;
 	}
-	last_line(data, point, point2, color);
+	last_line(data, point, point2);
 }
 
 void	bressenham_top(t_data *data)
@@ -116,6 +114,7 @@ void	bressenham_top(t_data *data)
 	int		j;
 
 	i = 0;
+	get_z_height(&(*data).map);
 	while (i < data->map->height - 1)
 	{
 		j = 0;
@@ -123,23 +122,15 @@ void	bressenham_top(t_data *data)
 		{
 			top_projection(data, &point, i, j);
 			top_projection(data, &point2, i + 1, j);
-			if (data->map->tab[i][j] != 0)
-				color = 0x00FF00;
-			else
-				color = 0xFFFFFF;
-			draw_line(data, point, point2, color);
+			draw_line(data, point, point2);
 			top_projection(data, &point, i, j);
 			top_projection(data, &point2, i, j + 1);
-			if (data->map->tab[i][j] != 0)
-				color = 0x00FF00;
-			else
-				color = 0xFFFFFF;
-			draw_line(data, point, point2, color);
+			draw_line(data, point, point2);
 			j++;
 		}
 		i++;
 	}
-	last_line(data, point, point2, color);
+	last_line(data, point, point2);
 }
 
 // =========================== OLD FUNCTIONS ============================

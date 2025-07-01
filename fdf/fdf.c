@@ -6,11 +6,31 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 16:22:56 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/01 13:24:15 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	free_map(t_map **map)
+{
+	int	i;
+
+	i = 0;
+	while (i < (*map)->height)
+	{
+		free((*map)->tab[i]);
+		i++;
+	}
+	free((*map)->tab);
+	i = 0;
+	while (i < (*map)->height)
+	{
+		free((*map)->origine_tab[i]);
+		i++;
+	}
+	free((*map)->origine_tab);
+}
 
 int	close_window(void *param)
 {
@@ -18,6 +38,7 @@ int	close_window(void *param)
 
 	data = (t_data *)param;
 	free_map(&data->map);
+	free((*data).map);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
@@ -34,6 +55,7 @@ int	get_key(int keycode, void *param)
 	if (keycode == ESCAPE)
 	{
 		free_map(&data->map);
+		free((*data).map);
 		mlx_destroy_window(data->mlx, data->win);
 		mlx_destroy_display(data->mlx);
 		free(data->mlx);

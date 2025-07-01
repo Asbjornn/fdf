@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:24:30 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 15:09:32 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/01 14:15:26 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@
 # define ISO_PROJ		105
 # define LETTER_N		110
 # define LETTER_M		109
+# define ZERO_COLOR		0x581845
+# define POSITIV_COLOR	0xFFC30F
+# define NEGATIV_COLOR	0x900C3F	
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  STRUCTURES  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -56,9 +59,12 @@ typedef struct s_map
 	int			width;
 	int			x_offset;
 	int			y_offset;
+	int			min_z;
+	int			max_z;
 	int			zoom;
 	double		rotate;
 	int			**tab;
+	int			**origine_tab;
 }			t_map;
 
 typedef struct s_point
@@ -67,6 +73,7 @@ typedef struct s_point
 	int		y;
 	int		x2;
 	int		y2;
+	int		z;
 	int		err;
 	int		err2;
 	int		dx;
@@ -81,6 +88,16 @@ typedef struct s_data
 	void	*win;
 	t_map	*map;
 }			t_data;
+
+typedef struct s_color
+{
+	int	r_start;
+	int	g_start;
+	int	b_start;
+	int	r_end;
+	int	g_end;
+	int	b_end;
+}			t_color;
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~  PROJECTIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -100,6 +117,10 @@ void	display_error(char *message, int fd);
 void	free_tab(char **tab);
 void	free_map(t_map **map);
 void	ft_swap(int *a, int *b);
+int		get_zoom(t_map map);
+int		test_colors(t_point point, t_point point2, int i, t_data *data);
+void	get_z_height(t_map **map);
+int		**copy_tab(int **src, t_map *map);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  BONUS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

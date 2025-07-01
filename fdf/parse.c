@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:58:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 15:13:02 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/01 14:52:46 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	get_width(char *file)
 	if (!line)
 		display_error("empty file", 2);
 	split = ft_split(line, ' ');
-	while (split[width])
+	while (split[width] && ft_strncmp(split[width], "\n", 2) != 0)
 		width++;
 	while (line)
 	{
@@ -69,7 +69,7 @@ static void	fill_string(t_map **map, char *line, int i)
 
 	j = 0;
 	split = ft_split(line, ' ');
-	while (split[j])
+	while (split[j] && ft_strncmp(split[j], "\n", 2) != 0)
 	{
 		(*map)->tab[i][j] = ft_atoi(split[j]);
 		j++;
@@ -115,17 +115,19 @@ t_map	*parse(int argc, char *argv[])
 		display_error("malloc map failed", 2);
 	map->height = get_height(argv[1]);
 	map->width = get_width(argv[1]);
-	map->x_offset = (WIN_LENGTH - (map->width - 1)) / 2;
-	map->x_offset -= ((map->width - 1) * 50) / 2;
+	map->zoom = get_zoom((*map));
+	map->x_offset = (WIN_LENGTH - (map->width - 1)) / 1;
+	map->x_offset -= ((map->width - 1) * map->zoom) / 1;
 	map->y_offset = (WIN_HEIGHT - (map->height - 1)) / 2;
-	map->y_offset -= ((map->height - 1) * 50) / 2;
-	map->zoom = ZOOM;
+	map->y_offset -= ((map->height - 1) * map->zoom) / 2;
 	map->rotate = 0;
 	ft_printf("height map = %d\n", map->height);
 	ft_printf("width map = %d\n", map->width);
-	map->tab = malloc(sizeof(int *) * (map->height - 1));
+	map->tab = malloc(sizeof(int *) * (map->height));
 	if (!map->tab)
 		display_error("malloc map tab failed", 2);
 	fill_tab(&map, argv[1]);
+	get_z_height(&map);
+	map->origine_tab = copy_tab(map->tab, map);
 	return (map);
 }

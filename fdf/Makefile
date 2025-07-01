@@ -12,12 +12,12 @@ DIR_O		= file_o
 LIBFT_A		= ${LIBFT_DIR}/libft.a
 MINILIBX_A	= ${MINILIBX_DIR}/libmlx_Linux.a
 
-SRCS    	= fdf.c parse.c utils.c bresenham.c projections.c change_map.c
+SRCS    	= fdf.c parse.c utils.c bresenham.c projections.c change_map.c colors.c
 
-SRCS_BONUS	= 
+# SRCS_BONUS	= 
 
 OBJ			= $(patsubst %.c,file_o/%.o,$(SRCS))
-OBJ_BONUS	= $(patsubst %.c,file_o/%.o,$(SRCS_BONUS))
+# OBJ_BONUS	= $(patsubst %.c,file_o/%.o,$(SRCS_BONUS))
 
 BLUE=\033[0;94m
 GREEN=\033[1;92m
@@ -31,14 +31,13 @@ $(DIR_O):
 file_o/%.o: %.c | $(DIR_O)
 	@${CC} ${CFLAGS} -I ${INCS_DIR} -c $< -o $@
 
-# -lX11 -lXext -lm
 ${NAME}: ${OBJ} lib
 	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME}
 	@echo -e "${GREEN}COMPILATION SUCEED"
 
-bonus: ${OBJ_BONUS}
-	@${CC} ${CFLAGS} ${OBJ_BONUS} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME}
-	@echo -e "${GREEN}COMPILATION SUCEED"
+# bonus: ${OBJ_BONUS}
+# @${CC} ${CFLAGS} ${OBJ_BONUS} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME}
+# @echo -e "${GREEN}COMPILATION SUCEED"
 
 lib:
 	@${MAKE} -C ${LIBFT_DIR}
@@ -54,4 +53,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:	all clean fclean re bonus
+.PHONY:	all clean fclean re

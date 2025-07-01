@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:21:59 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 16:15:13 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/01 13:19:06 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int	get_mouse(int button, int x, int y, void *param)
 	if (button == SCROLL_UP)
 	{
 		ft_printf("scroll up\n");
-		data->map->zoom += 10;
+		data->map->zoom += 1;
 	}
 	else if (button == SCROLL_DOWN)
 	{
 		ft_printf("scroll down\n");
-		data->map->zoom -= 10;
+		data->map->zoom -= 1;
 	}
 	else
 		return (0);
@@ -55,21 +55,23 @@ static void	change_in_tab_height(t_data *data, int value)
 {
 	int	i;
 	int	j;
+	int	new_z;
 
 	i = 0;
-	while (i < data->map->height - 1)
+	new_z = 0;
+	while (i < data->map->height)
 	{
 		j = 0;
-		while (j < data->map->width - 1)
+		while (j < data->map->width)
 		{
-			if (data->map->tab[i][j] + value == 0)
-				data->map->tab[i][j] = 1;
-			else if (data->map->tab[i][j] != 0)
-				data->map->tab[i][j] += value;
+			new_z = data->map->tab[i][j] + value
+				* (data->map->origine_tab[i][j] / 10);
+			data->map->tab[i][j] = new_z;
 			j++;
 		}
 		i++;
 	}
+	get_z_height(&data->map);
 }
 
 void	change_height(t_data *data, int keycode)
