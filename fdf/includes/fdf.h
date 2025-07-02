@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:24:30 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/01 14:15:26 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/02 15:36:57 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,14 @@
 // # define ISO_ANGLE		0.523599
 # define ISO_ANGLE		0.65
 # define ZOOM			50
-# define ESCAPE			65307
+
 # define WIN_LENGTH		1920
 # define WIN_HEIGHT		1080
+
 # define SCROLL_UP		4
 # define SCROLL_DOWN	5
+
+# define ESCAPE			65307
 # define LEFT			65361
 # define UP				65362
 # define RIGHT			65363
@@ -43,10 +46,12 @@
 # define MINUS2			45
 # define PLUS1			65451
 # define PLUS2			61
-# define TOP_PROJ		116
 # define ISO_PROJ		105
+# define TOP_PROJ		111
+# define SIDE_PROJ		112
 # define LETTER_N		110
 # define LETTER_M		109
+
 # define ZERO_COLOR		0x581845
 # define POSITIV_COLOR	0xFFC30F
 # define NEGATIV_COLOR	0x900C3F	
@@ -65,6 +70,9 @@ typedef struct s_map
 	double		rotate;
 	int			**tab;
 	int			**origine_tab;
+	int			is_iso;
+	int			is_top;
+	int			is_side;
 }			t_map;
 
 typedef struct s_point
@@ -80,6 +88,7 @@ typedef struct s_point
 	int		dy;
 	int		sx;
 	int		sy;
+	int		color;
 }			t_point;
 
 typedef struct s_data
@@ -87,6 +96,11 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	t_map	*map;
+	char	*addr;
+	void	*img;
+	int		line_length;
+	int		bits_per_pixel;
+	int		endian;
 }			t_data;
 
 typedef struct s_color
@@ -103,13 +117,21 @@ typedef struct s_color
 
 void	top_projection(t_data *data, t_point *point, int i, int j);
 void	iso_projection(t_data *data, t_point *point, int i, int j);
+void	side_projection(t_data *data, t_point *point, int i, int j);
+
+void	last_line(t_data *data, t_point point, t_point point2,
+			void (*projection)(t_data *data, t_point *point, int i, int j));
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALGO  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-void	bressenham_iso(t_data *data);
-void	bressenham_top(t_data *data);
+void	bressenham(t_data *data,
+			void (*projection)(t_data *data, t_point *point, int i, int j));
 
 t_map	*parse(int argc, char *argv[]);
+void	draw_line(t_data *data, t_point point, t_point point2);
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	clear_image(t_data *data);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  UTILS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

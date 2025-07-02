@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:21:59 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/01 13:19:06 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:16:12 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,13 @@ void	move_map(t_data *data, int keycode)
 		data->map->rotate++;
 	if (keycode == LETTER_M)
 		data->map->rotate--;
-	mlx_clear_window(data->mlx, data->win);
-	bressenham_iso(data);
+	clear_image(data);
+	if (data->map->is_iso)
+		bressenham(data, iso_projection);
+	if (data->map->is_top)
+		bressenham(data, top_projection);
+	if (data->map->is_side)
+		bressenham(data, side_projection);
 }
 
 int	get_mouse(int button, int x, int y, void *param)
@@ -47,8 +52,13 @@ int	get_mouse(int button, int x, int y, void *param)
 	}
 	else
 		return (0);
-	mlx_clear_window(data->mlx, data->win);
-	bressenham_iso(data);
+	clear_image(data);
+	if (data->map->is_iso)
+		bressenham(data, iso_projection);
+	if (data->map->is_top)
+		bressenham(data, top_projection);
+	if (data->map->is_side)
+		bressenham(data, side_projection);
 }
 
 static void	change_in_tab_height(t_data *data, int value)
@@ -80,20 +90,39 @@ void	change_height(t_data *data, int keycode)
 		change_in_tab_height(data, -5);
 	if (keycode == PLUS1 || keycode == PLUS2)
 		change_in_tab_height(data, 5);
-	mlx_clear_window(data->mlx, data->win);
-	bressenham_iso(data);
+	clear_image(data);
+	if (data->map->is_iso)
+		bressenham(data, iso_projection);
+	if (data->map->is_top)
+		bressenham(data, top_projection);
+	if (data->map->is_side)
+		bressenham(data, side_projection);
 }
 
 void	change_view(t_data *data, int keycode)
 {
 	if (keycode == ISO_PROJ)
 	{
-		mlx_clear_window(data->mlx, data->win);
-		bressenham_iso(data);
+		clear_image(data);
+		data->map->is_iso = 1;
+		data->map->is_top = 0;
+		data->map->is_side = 0;
+		bressenham(data, iso_projection);
 	}
 	if (keycode == TOP_PROJ)
 	{
-		mlx_clear_window(data->mlx, data->win);
-		bressenham_top(data);
+		clear_image(data);
+		data->map->is_iso = 0;
+		data->map->is_top = 1;
+		data->map->is_side = 0;
+		bressenham(data, top_projection);
+	}
+	if (keycode == SIDE_PROJ)
+	{
+		clear_image(data);
+		data->map->is_iso = 0;
+		data->map->is_top = 0;
+		data->map->is_side = 1;
+		bressenham(data, side_projection);
 	}
 }

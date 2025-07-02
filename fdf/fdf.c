@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/01 13:24:15 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:21:55 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	get_key(int keycode, void *param)
 	if (keycode == MINUS1 || keycode == MINUS2
 		|| keycode == PLUS1 || keycode == PLUS2)
 		change_height(data, keycode);
-	if (keycode == TOP_PROJ || keycode == ISO_PROJ)
+	if (keycode == TOP_PROJ || keycode == ISO_PROJ || keycode == SIDE_PROJ)
 		change_view(data, keycode);
 	return (0);
 }
@@ -83,14 +83,18 @@ int	main(int argc, char *argv[])
 	if (!data)
 		display_error("malloc failed in main", 2);
 	data->map = parse(argc, argv);
-	(*data).mlx = mlx_init();
-	(*data).win = mlx_new_window((*data).mlx, WIN_LENGTH, WIN_HEIGHT, "fdf");
-	// draw_map_top(data);
-	// draw_map_iso(data);
-	bressenham_iso(data);
+	data->mlx = mlx_init();
+	data->win = mlx_new_window((*data).mlx, WIN_LENGTH, WIN_HEIGHT, "fdf");
+	data->img = mlx_new_image((*data).mlx, WIN_LENGTH, WIN_HEIGHT);
+	data->addr = mlx_get_data_addr((*data).img, &(*data).bits_per_pixel,
+			&(*data).line_length, &(*data).endian);
+	bressenham(data, iso_projection);
 	mlx_key_hook((*data).win, get_key, data);
 	mlx_mouse_hook((*data).win, get_mouse, data);
 	mlx_hook((*data).win, 17, 0, close_window, data);
 	mlx_loop((*data).mlx);
 	return (0);
 }
+
+// draw_map_top(data);
+// draw_map_iso(data);

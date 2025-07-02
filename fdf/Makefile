@@ -12,7 +12,7 @@ DIR_O		= file_o
 LIBFT_A		= ${LIBFT_DIR}/libft.a
 MINILIBX_A	= ${MINILIBX_DIR}/libmlx_Linux.a
 
-SRCS    	= fdf.c parse.c utils.c bresenham.c projections.c change_map.c colors.c
+SRCS    	= fdf.c parse.c utils.c bresenham.c projections.c change_map.c colors.c ft_mlx.c
 
 # SRCS_BONUS	= 
 

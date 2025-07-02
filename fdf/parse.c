@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:58:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/01 14:52:46 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:16:03 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,10 @@ t_map	*parse(int argc, char *argv[])
 	map->height = get_height(argv[1]);
 	map->width = get_width(argv[1]);
 	map->zoom = get_zoom((*map));
-	map->x_offset = (WIN_LENGTH - (map->width - 1)) / 1;
-	map->x_offset -= ((map->width - 1) * map->zoom) / 1;
-	map->y_offset = (WIN_HEIGHT - (map->height - 1)) / 2;
-	map->y_offset -= ((map->height - 1) * map->zoom) / 2;
 	map->rotate = 0;
+	map->is_iso = 1;
+	map->is_top = 0;
+	map->is_side = 0;
 	ft_printf("height map = %d\n", map->height);
 	ft_printf("width map = %d\n", map->width);
 	map->tab = malloc(sizeof(int *) * (map->height));

@@ -6,12 +6,12 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:07:25 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/06/27 16:11:55 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/02 11:53:21 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 19
+# define BUFFER_SIZE 10
 #endif
 #include "get_next_line.h"
 

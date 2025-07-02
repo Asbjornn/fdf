@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 12:45:55 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/01 14:23:11 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/02 15:51:32 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,17 @@ int	test_colors(t_point point, t_point point2, int i, t_data *data)
 		length = point.dy;
 	return (color(color_for_z(point.z, data), color_for_z(point2.z, data),
 			((float)i / (float)length)));
+}
+int	get_color(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		while (line[i] != ',')
+			i++;
+		
+		i++;
+	}
 }
