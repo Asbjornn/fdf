@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:58:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/02 16:16:03 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/03 15:22:05 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static void	fill_string(t_map **map, char *line, int i)
 	while (split[j] && ft_strncmp(split[j], "\n", 2) != 0)
 	{
 		(*map)->tab[i][j] = ft_atoi(split[j]);
+		(*map)->tab_color[i][j] = atoc(split[j]);
 		j++;
 	}
 	free_tab(split);
@@ -91,7 +92,8 @@ static void	fill_tab(t_map **map, char *file)
 	while (line)
 	{
 		(*map)->tab[i] = malloc(sizeof(int) * (*map)->width);
-		if (!(*map)->tab[i])
+		(*map)->tab_color[i] = malloc(sizeof(int) * (*map)->width);
+		if (!(*map)->tab[i] || !(*map)->tab_color[i])
 		{
 			free_map(map);
 			close(fd);
@@ -120,10 +122,13 @@ t_map	*parse(int argc, char *argv[])
 	map->is_iso = 1;
 	map->is_top = 0;
 	map->is_side = 0;
-	ft_printf("height map = %d\n", map->height);
-	ft_printf("width map = %d\n", map->width);
+	map->x_offset = 0;
+	map->y_offset = 0;
 	map->tab = malloc(sizeof(int *) * (map->height));
 	if (!map->tab)
+		display_error("malloc map tab failed", 2);
+	map->tab_color = malloc(sizeof(int *) * (map->height));
+	if (!map->tab_color)
 		display_error("malloc map tab failed", 2);
 	fill_tab(&map, argv[1]);
 	get_z_height(&map);

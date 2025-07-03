@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:21:59 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/02 16:16:12 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/03 13:05:25 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@ void	move_map(t_data *data, int keycode)
 {
 	if (keycode == LEFT)
 		data->map->x_offset -= 50;
-	if (keycode == RIGHT)
+	else if (keycode == RIGHT)
 		data->map->x_offset += 50;
-	if (keycode == UP)
+	else if (keycode == UP)
 		data->map->y_offset -= 50;
-	if (keycode == DOWN)
+	else if (keycode == DOWN)
 		data->map->y_offset += 50;
-	if (keycode == LETTER_N)
+	else if (keycode == LETTER_N)
 		data->map->rotate++;
-	if (keycode == LETTER_M)
+	else if (keycode == LETTER_M)
 		data->map->rotate--;
+	else if (keycode == LETTER_R)
+	{
+		data->map->x_offset = 0;
+		data->map->y_offset = 0;
+	}
 	clear_image(data);
 	if (data->map->is_iso)
 		bressenham(data, iso_projection);
@@ -41,15 +46,9 @@ int	get_mouse(int button, int x, int y, void *param)
 
 	data = (t_data *)param;
 	if (button == SCROLL_UP)
-	{
-		ft_printf("scroll up\n");
 		data->map->zoom += 1;
-	}
 	else if (button == SCROLL_DOWN)
-	{
-		ft_printf("scroll down\n");
 		data->map->zoom -= 1;
-	}
 	else
 		return (0);
 	clear_image(data);

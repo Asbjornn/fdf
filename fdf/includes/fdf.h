@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:24:30 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/02 15:36:57 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/03 16:02:30 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define ISO_ANGLE		0.65
 # define ZOOM			50
 
-# define WIN_LENGTH		1920
-# define WIN_HEIGHT		1080
+# define WIN_LENGTH		3840
+# define WIN_HEIGHT		2100
 
 # define SCROLL_UP		4
 # define SCROLL_DOWN	5
@@ -51,10 +51,11 @@
 # define SIDE_PROJ		112
 # define LETTER_N		110
 # define LETTER_M		109
+# define LETTER_R		114
 
 # define ZERO_COLOR		0x581845
 # define POSITIV_COLOR	0xFFC30F
-# define NEGATIV_COLOR	0x900C3F	
+# define NEGATIV_COLOR	0x3c748c	
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  STRUCTURES  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -69,6 +70,7 @@ typedef struct s_map
 	int			zoom;
 	double		rotate;
 	int			**tab;
+	int			**tab_color;
 	int			**origine_tab;
 	int			is_iso;
 	int			is_top;
@@ -115,17 +117,17 @@ typedef struct s_color
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~  PROJECTIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-void	top_projection(t_data *data, t_point *point, int i, int j);
-void	iso_projection(t_data *data, t_point *point, int i, int j);
-void	side_projection(t_data *data, t_point *point, int i, int j);
+void	top_projection(t_map *map, t_point *point, int i, int j);
+void	iso_projection(t_map *map, t_point *point, int i, int j);
+void	side_projection(t_map *map, t_point *point, int i, int j);
 
 void	last_line(t_data *data, t_point point, t_point point2,
-			void (*projection)(t_data *data, t_point *point, int i, int j));
+			void (*projection)(t_map *map, t_point *point, int i, int j));
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ALGO  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 void	bressenham(t_data *data,
-			void (*projection)(t_data *data, t_point *point, int i, int j));
+			void (*projection)(t_map *map, t_point *point, int i, int j));
 
 t_map	*parse(int argc, char *argv[]);
 void	draw_line(t_data *data, t_point point, t_point point2);
@@ -140,9 +142,10 @@ void	free_tab(char **tab);
 void	free_map(t_map **map);
 void	ft_swap(int *a, int *b);
 int		get_zoom(t_map map);
-int		test_colors(t_point point, t_point point2, int i, t_data *data);
+int		set_colors(t_point point, t_point point2, int i, t_data *data);
 void	get_z_height(t_map **map);
 int		**copy_tab(int **src, t_map *map);
+int		atoc(char *line);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  BONUS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

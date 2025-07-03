@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:04:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/02 14:27:46 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/03 14:23:41 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	draw_line(t_data *data, t_point point, t_point point2)
 	while (1)
 	{
 		my_mlx_pixel_put(data, point.x, point.y,
-			test_colors(point, point2, i, data));
+			set_colors(point, point2, i, data));
 		if (point.x == point2.x && point.y == point2.y)
 			break ;
 		point.err2 = point.err * 2;
@@ -55,7 +55,7 @@ void	draw_line(t_data *data, t_point point, t_point point2)
 }
 
 void	bressenham(t_data *data,
-	void (*projection)(t_data *data, t_point *point, int i, int j))
+	void (*projection)(t_map *map, t_point *point, int i, int j))
 {
 	t_point	point;
 	t_point	point2;
@@ -70,11 +70,11 @@ void	bressenham(t_data *data,
 		j = 0;
 		while (j < data->map->width - 1)
 		{
-			projection(data, &point, i, j);
-			projection(data, &point2, i + 1, j);
+			projection(data->map, &point, i, j);
+			projection(data->map, &point2, i + 1, j);
 			draw_line(data, point, point2);
-			projection(data, &point, i, j);
-			projection(data, &point2, i, j + 1);
+			projection(data->map, &point, i, j);
+			projection(data->map, &point2, i, j + 1);
 			draw_line(data, point, point2);
 			j++;
 		}
@@ -83,51 +83,3 @@ void	bressenham(t_data *data,
 	last_line(data, point, point2, projection);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
-
-// =========================== OLD FUNCTIONS ============================
-// 
-// static void	draw_line_v(t_data *data, t_point point, t_point point2)
-// {
-// 	int	x;
-
-// 	if (point.y > point2.y)
-// 	{
-// 		ft_swap(&point.x, &point2.x);
-// 		ft_swap(&point.y, &point2.y);
-// 	}
-// 	x = point.x;
-// 	while (point.y != point2.y)
-// 	{
-// 		mlx_pixel_put(data->mlx, data->win, x, point.y, 0xFFFFFF);
-// 		if (point.err >= 0)
-// 		{
-// 			x += point.sx;
-// 			point.err -= (point.dy * 2);
-// 		}
-// 		point.err += (point.dy * 2);
-// 		point.y++;
-// 	}
-// }
-
-// static void	draw_line_h(t_data *data, t_point point, t_point point2)
-// {
-// 	int	y;
-
-// 	if (point.x > point2.x)
-// 	{
-// 		ft_swap(&point.x, &point2.x);
-// 		ft_swap(&point.y, &point2.y);
-// 	}
-// 	y = point.y;
-// 	while (point.x != point2.x)
-// 	{
-// 		mlx_pixel_put(data->mlx, data->win, point.x, y, 0xFFFFFF);
-// 		if (point.err >= 0)
-// 		{
-// 			y += point.sy;
-// 			point.err -= (point.dx * 2);
-// 		}
-// 		point.err += (point.dx * 2);
-// 		point.x++;
-// 	}
-// }

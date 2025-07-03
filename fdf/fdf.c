@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/02 16:21:55 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/03 13:40:46 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ void	free_map(t_map **map)
 		i++;
 	}
 	free((*map)->origine_tab);
+	i = 0;
+	while (i < (*map)->height)
+	{
+		free((*map)->tab_color[i]);
+		i++;
+	}
+	free((*map)->tab_color);
 }
 
 int	close_window(void *param)
@@ -63,7 +70,7 @@ int	get_key(int keycode, void *param)
 		exit (0);
 	}
 	if ((keycode >= LEFT && keycode <= DOWN)
-		|| keycode == LETTER_M || keycode == LETTER_N)
+		|| keycode == LETTER_M || keycode == LETTER_N || keycode == LETTER_R)
 		move_map(data, keycode);
 	if (keycode == MINUS1 || keycode == MINUS2
 		|| keycode == PLUS1 || keycode == PLUS2)

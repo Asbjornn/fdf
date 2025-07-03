@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 12:45:55 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/02 15:51:32 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/03 15:22:28 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	color_for_z(int z, t_data *data)
 	}
 }
 
-int	test_colors(t_point point, t_point point2, int i, t_data *data)
+int	set_colors(t_point point, t_point point2, int i, t_data *data)
 {
 	int	length;
 
@@ -87,16 +87,27 @@ int	test_colors(t_point point, t_point point2, int i, t_data *data)
 	return (color(color_for_z(point.z, data), color_for_z(point2.z, data),
 			((float)i / (float)length)));
 }
-int	get_color(char *line)
+
+int	atoc(char *line)
 {
 	int	i;
+	int	result;
 
 	i = 0;
+	result = 0;
+	while (line[i] != ',' && line[i])
+		i++;
+	if (line[i] == '\0')
+		return (0);
+	i += 2;
 	while (line[i])
 	{
-		while (line[i] != ',')
-			i++;
-		
+		result *= 10;
+		if (line[i] >= 'A' && line[i] <= 'F')
+			result += (line[i] - 'A') + 10;
+		else
+			result += line[i] - '0';
 		i++;
 	}
+	return (result);
 }
