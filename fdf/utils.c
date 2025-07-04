@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:08:03 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/01 13:17:13 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:26:33 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,24 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-int	**copy_tab(int **src, t_map *map)
+t_tab_point	**copy_tab(t_tab_point **src, t_map *map)
 {
-	int	**tab;
-	int	i;
-	int	j;
+	t_tab_point	**tab;
+	int			i;
+	int			j;
 
 	i = 0;
-	tab = malloc(sizeof(int *) * map->height);
+	tab = malloc(sizeof(t_tab_point *) * map->height);
 	while (i < (*map).height)
 	{
 		j = 0;
-		tab[i] = malloc(sizeof(int) * map->width);
+		tab[i] = malloc(sizeof(t_tab_point) * map->width);
 		while (j < (*map).width)
 		{
-			tab[i][j] = src[i][j];
+			tab[i][j].x = src[i][j].x;
+			tab[i][j].y = src[i][j].y;
+			tab[i][j].z = src[i][j].z;
+			tab[i][j].color = src[i][j].color;
 			j++;
 		}
 		i++;
@@ -76,3 +79,4 @@ int	get_zoom(t_map map)
 	else
 		return (5);
 }
+

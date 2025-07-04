@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 12:45:55 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/03 15:22:28 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:27:48 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	get_z_height(t_map **map)
 		j = 0;
 		while (j < (*map)->width)
 		{
-			if ((*map)->tab[i][j] < (*map)->min_z)
-				(*map)->min_z = (*map)->tab[i][j];
-			if ((*map)->tab[i][j] > (*map)->max_z)
-				(*map)->max_z = (*map)->tab[i][j];
+			if ((*map)->tab[i][j].z < (*map)->min_z)
+				(*map)->min_z = (*map)->tab[i][j].z;
+			if ((*map)->tab[i][j].z > (*map)->max_z)
+				(*map)->max_z = (*map)->tab[i][j].z;
 			j++;
 		}
 		i++;
@@ -79,16 +79,27 @@ static int	color_for_z(int z, t_data *data)
 int	set_colors(t_point point, t_point point2, int i, t_data *data)
 {
 	int	length;
+	int	color1;
+	int	color2;
 
 	if (point.dx > point.dy)
 		length = point.dx;
 	else
 		length = point.dy;
-	return (color(color_for_z(point.z, data), color_for_z(point2.z, data),
-			((float)i / (float)length)));
+	if (point.color != 0)
+		color1 = point.color;
+	else
+		color1 = color_for_z(point.z, data);
+	if (point2.color != 0)
+		color2 = point2.color;
+	else
+		color2 = color_for_z(point2.z, data);
+	if (color1 == color2)
+		return (color1);
+	return (color(color1, color2, ((float)i / (float)length)));
 }
 
-int	atoc(char *line)
+int	ft_atoc(char *line)
 {
 	int	i;
 	int	result;
@@ -99,15 +110,19 @@ int	atoc(char *line)
 		i++;
 	if (line[i] == '\0')
 		return (0);
-	i += 2;
-	while (line[i])
+	while (line[i] != 'x')
+		i++;
+	while (line[++i])
 	{
-		result *= 10;
+		if (line[i] == '\n')
+			break ;
+		result *= 16;
 		if (line[i] >= 'A' && line[i] <= 'F')
 			result += (line[i] - 'A') + 10;
+		else if (line[i] >= 'a' && line[i] <= 'f')
+			result += (line[i] - 'a') + 10;
 		else
 			result += line[i] - '0';
-		i++;
 	}
 	return (result);
 }

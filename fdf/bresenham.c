@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:04:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/03 14:23:41 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/04 17:57:05 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,30 @@ static void	get_coor(t_point *point, t_point point2)
 		point->sy = 1;
 	else
 		point->sy = -1;
+}
+
+static	void	last_line(t_data *data, t_point point, t_point point2,
+	void (*projection)(t_map *map, t_point *point, int i, int j))
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < data->map->height - 1)
+	{
+		projection(data->map, &point, i, data->map->width - 1);
+		projection(data->map, &point2, i + 1, data->map->width - 1);
+		draw_line(data, point, point2);
+		i++;
+	}
+	while (j < data->map->width - 1)
+	{
+		projection(data->map, &point, data->map->height - 1, j);
+		projection(data->map, &point2, data->map->height - 1, j + 1);
+		draw_line(data, point, point2);
+		j++;
+	}
 }
 
 void	draw_line(t_data *data, t_point point, t_point point2)

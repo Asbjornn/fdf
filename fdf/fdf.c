@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/03 13:40:46 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:59:15 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ void	free_map(t_map **map)
 		i++;
 	}
 	free((*map)->origine_tab);
-	i = 0;
-	while (i < (*map)->height)
-	{
-		free((*map)->tab_color[i]);
-		i++;
-	}
-	free((*map)->tab_color);
 }
 
 int	close_window(void *param)
@@ -46,6 +39,7 @@ int	close_window(void *param)
 	data = (t_data *)param;
 	free_map(&data->map);
 	free((*data).map);
+	mlx_destroy_image(data->mlx, data->img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
@@ -63,6 +57,7 @@ int	get_key(int keycode, void *param)
 	{
 		free_map(&data->map);
 		free((*data).map);
+		mlx_destroy_image(data->mlx, data->img);
 		mlx_destroy_window(data->mlx, data->win);
 		mlx_destroy_display(data->mlx);
 		free(data->mlx);
@@ -96,6 +91,7 @@ int	main(int argc, char *argv[])
 	data->addr = mlx_get_data_addr((*data).img, &(*data).bits_per_pixel,
 			&(*data).line_length, &(*data).endian);
 	bressenham(data, iso_projection);
+	text_projection(data);
 	mlx_key_hook((*data).win, get_key, data);
 	mlx_mouse_hook((*data).win, get_mouse, data);
 	mlx_hook((*data).win, 17, 0, close_window, data);

@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:21:59 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/03 13:05:25 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:59:47 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	move_map(t_data *data, int keycode)
 		bressenham(data, top_projection);
 	if (data->map->is_side)
 		bressenham(data, side_projection);
+	text_projection(data);
 }
 
 int	get_mouse(int button, int x, int y, void *param)
@@ -58,6 +59,7 @@ int	get_mouse(int button, int x, int y, void *param)
 		bressenham(data, top_projection);
 	if (data->map->is_side)
 		bressenham(data, side_projection);
+	text_projection(data);
 }
 
 static void	change_in_tab_height(t_data *data, int value)
@@ -73,9 +75,13 @@ static void	change_in_tab_height(t_data *data, int value)
 		j = 0;
 		while (j < data->map->width)
 		{
-			new_z = data->map->tab[i][j] + value
-				* (data->map->origine_tab[i][j] / 10);
-			data->map->tab[i][j] = new_z;
+			if (data->map->origine_tab[i][j].z < 10)
+				new_z = data->map->tab[i][j].z
+					+ (value * data->map->origine_tab[i][j].z * 2) / 10;
+			else
+				new_z = data->map->tab[i][j].z
+					+ (value * data->map->origine_tab[i][j].z) / 10;
+			data->map->tab[i][j].z = new_z;
 			j++;
 		}
 		i++;
@@ -96,6 +102,7 @@ void	change_height(t_data *data, int keycode)
 		bressenham(data, top_projection);
 	if (data->map->is_side)
 		bressenham(data, side_projection);
+	text_projection(data);
 }
 
 void	change_view(t_data *data, int keycode)
@@ -124,4 +131,5 @@ void	change_view(t_data *data, int keycode)
 		data->map->is_side = 1;
 		bressenham(data, side_projection);
 	}
+	text_projection(data);
 }
