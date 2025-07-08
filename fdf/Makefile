@@ -35,7 +35,7 @@ ${MINILIBX_A}:
 	@${MAKE} -C ${MINILIBX_DIR}
 
 ${NAME}: ${OBJ} ${LIBFT_A} ${MINILIBX_A}
-	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME} &&  echo -e "${GREEN}COMPILATION SUCEED"\
+	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME} &&  echo "${GREEN}COMPILATION SUCEED"\
 	"\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n"\
 	"⣿⣿⣿⣿⣿⣿⣿⠛⢩⣴⣶⣶⣶⣌⠙⠫⠛⢋⣭⣤⣤⣤⣤⡙⣿⣿⣿⣿⣿⣿\n"\
 	"⣿⣿⣿⣿⣿⡟⢡⣾⣿⠿⣛⣛⣛⣛⣛⡳⠆⢻⣿⣿⣿⠿⠿⠷⡌⠻⣿⣿⣿⣿\n"\
@@ -56,7 +56,7 @@ clean:
 	@rm -rf $(DIR_O)
 	@${MAKE} -C ${LIBFT_DIR} clean
 	@${MAKE} -C ${MINILIBX_DIR} clean
-	@echo -e "${GREEN}FILE.O IS CLEAN"
+	@echo "${GREEN}FILE.O IS CLEAN"
 
 fclean: clean
 	@rm -f ${NAME}
@@ -64,4 +64,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:	all clean fclean re
+norm:
+	@norminette $(SRCS) $(LIBFT_DIR) $(INCS_DIR)
+
+.PHONY:	all clean fclean re norm
