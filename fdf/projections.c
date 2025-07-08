@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:43:31 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/04 16:56:05 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 10:26:01 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ void	iso_projection(t_map *map, t_point *point, int i, int j)
 	int	offset[2];
 	int	proj[2];
 
-	proj[0] = (map->width + map->height) / 5 * map->zoom * cos(ISO_ANGLE);
-	proj[1] = (map->width + map->height) * map->zoom * sin(ISO_ANGLE);
+	proj[0] = (map->width + map->height) / 5 * map->zoom * cos(0.866);
+	proj[1] = (map->width + map->height) * map->zoom * sin(0.5);
 	offset[0] = (WIN_LENGTH - proj[0]) / 2 + map->x_offset;
 	offset[1] = (WIN_HEIGHT - proj[1]) / 2 + map->y_offset;
 	x = j * map->zoom;
 	y = i * map->zoom;
-	point->x = (x - y) * cos(ISO_ANGLE) + offset[0];
-	point->y = (x + y) * sin(ISO_ANGLE) - map->tab[i][j].z * 2 + offset[1];
+	point->x = (x - y) * cos(0.866) + offset[0];
+	point->y = (x + y) * sin(0.5) - map->tab[i][j].z * 2 + offset[1];
 	point->z = map->tab[i][j].z;
 	point->color = map->tab[i][j].color;
 }
@@ -61,13 +61,17 @@ void	iso_projection(t_map *map, t_point *point, int i, int j)
 void	text_projection(t_data *data)
 {
 	mlx_string_put(data->mlx, data->win, 20, 30, 0xFFFFFF, "INPUTS");
-	mlx_string_put(data->mlx, data->win, 20, 60, 0xFFFFFF, "ZOOM : MOUSE WHEEL");
-	mlx_string_put(data->mlx, data->win, 20, 80, 0xFFFFFF, "MOVE : ARROWS");
-	mlx_string_put(data->mlx, data->win, 20, 110, 0xFFFFFF, "PROJECTIONS :");
-	mlx_string_put(data->mlx, data->win, 30, 130, 0xFFFFFF, "ISOMETRIC : I");
-	mlx_string_put(data->mlx, data->win, 30, 150, 0xFFFFFF, "TOP : O");
-	mlx_string_put(data->mlx, data->win, 30, 170, 0xFFFFFF, "SIDE : P");
-	mlx_string_put(data->mlx, data->win, 20, 200, 0xFFFFFF, "RESET MOVEMENT : R");
-	mlx_string_put(data->mlx, data->win, 20, 230, 0xFFFFFF, "INCREASE HEIGHT : -");
-	mlx_string_put(data->mlx, data->win, 20, 250, 0xFFFFFF, "DECREASE HEIGHT : +");
+	mlx_string_put(data->mlx, data->win, 20, 60, \
+		0xFFFFFF, "ZOOM : MOUSE WHEEL");
+	mlx_string_put(data->mlx, data->win, 20, 90, 0xFFFFFF, "MOVE : ARROWS");
+	mlx_string_put(data->mlx, data->win, 20, 120, 0xFFFFFF, "PROJECTIONS :");
+	mlx_string_put(data->mlx, data->win, 30, 140, 0xFFFFFF, "ISOMETRIC : I");
+	mlx_string_put(data->mlx, data->win, 30, 160, 0xFFFFFF, "TOP : O");
+	mlx_string_put(data->mlx, data->win, 30, 180, 0xFFFFFF, "SIDE : P");
+	mlx_string_put(data->mlx, data->win, 20, 210, \
+		0xFFFFFF, "RESET MOVEMENT : R");
+	mlx_string_put(data->mlx, data->win, 20, 240, \
+		0xFFFFFF, "INCREASE HEIGHT : -");
+	mlx_string_put(data->mlx, data->win, 20, 260, \
+		0xFFFFFF, "DECREASE HEIGHT : +");
 }
