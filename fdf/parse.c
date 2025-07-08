@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:58:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/04 15:36:45 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 12:13:14 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static void	fill_tab(t_map **map, char *file)
 	free(line);
 }
 
-t_map	*parse(int argc, char *argv[])
+t_map	*parse(char *argv[])
 {
 	t_map	*map;
 

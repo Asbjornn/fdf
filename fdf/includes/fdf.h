@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:24:30 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/04 16:35:24 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:02:00 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		side_projection(t_map *map, t_point *point, int i, int j);
 void		bressenham(t_data *data,
 				void (*projection)(t_map *map, t_point *point, int i, int j));
 
-t_map		*parse(int argc, char *argv[]);
+t_map		*parse(char *argv[]);
 void		draw_line(t_data *data, t_point point, t_point point2);
 
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -144,11 +144,12 @@ void		clear_image(t_data *data);
 void		display_error(char *message, int fd);
 void		free_tab(char **tab);
 void		free_map(t_map **map);
-void		ft_swap(int *a, int *b);
-int			get_zoom(t_map map);
-int			set_colors(t_point point, t_point point2, int i, t_data *data);
-void		get_z_height(t_map **map);
+void		free_point_tab(t_tab_point **tab);
 t_tab_point	**copy_tab(t_tab_point **src, t_map *map);
+
+int			get_zoom(t_map map);
+void		get_z_height(t_map **map);
+int			set_colors(t_point point, t_point point2, int i, t_data *data);
 int			ft_atoc(char *line);
 void		text_projection(t_data *data);
 

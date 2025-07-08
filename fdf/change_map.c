@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:21:59 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/04 16:59:47 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:04:26 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	move_map(t_data *data, int keycode)
 	else if (keycode == DOWN)
 		data->map->y_offset += 50;
 	else if (keycode == LETTER_N)
-		data->map->rotate++;
+		data->map->rotate += 0.1;
 	else if (keycode == LETTER_M)
-		data->map->rotate--;
+		data->map->rotate -= 0.1;
 	else if (keycode == LETTER_R)
 	{
 		data->map->x_offset = 0;
@@ -45,6 +45,8 @@ int	get_mouse(int button, int x, int y, void *param)
 {
 	t_data	*data;
 
+	(void)x;
+	(void)y;
 	data = (t_data *)param;
 	if (button == SCROLL_UP)
 		data->map->zoom += 1;
@@ -60,6 +62,7 @@ int	get_mouse(int button, int x, int y, void *param)
 	if (data->map->is_side)
 		bressenham(data, side_projection);
 	text_projection(data);
+	return (0);
 }
 
 static void	change_in_tab_height(t_data *data, int value)

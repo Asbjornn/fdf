@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 12:56:41 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/04/21 12:24:18 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 11:17:15 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+void	ft_swap(int	*a, int *b);
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

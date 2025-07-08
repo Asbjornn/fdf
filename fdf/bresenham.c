@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:04:00 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/04 17:57:05 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 12:14:00 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	bressenham(t_data *data,
 {
 	t_point	point;
 	t_point	point2;
-	int		color;
 	int		i;
 	int		j;
 

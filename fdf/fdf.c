@@ -6,31 +6,11 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/04 16:59:15 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:25:56 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	free_map(t_map **map)
-{
-	int	i;
-
-	i = 0;
-	while (i < (*map)->height)
-	{
-		free((*map)->tab[i]);
-		i++;
-	}
-	free((*map)->tab);
-	i = 0;
-	while (i < (*map)->height)
-	{
-		free((*map)->origine_tab[i]);
-		i++;
-	}
-	free((*map)->origine_tab);
-}
 
 int	close_window(void *param)
 {
@@ -80,11 +60,11 @@ int	main(int argc, char *argv[])
 	t_data	*data;
 
 	if (argc != 2)
-		display_error("format: ./fdf 'file.fdf'\n", 2);
+		display_error("format: ./fdf 'file.fdf'", 2);
 	data = malloc(sizeof(t_data));
 	if (!data)
 		display_error("malloc failed in main", 2);
-	data->map = parse(argc, argv);
+	data->map = parse(argv);
 	data->mlx = mlx_init();
 	data->win = mlx_new_window((*data).mlx, WIN_LENGTH, WIN_HEIGHT, "fdf");
 	data->img = mlx_new_image((*data).mlx, WIN_LENGTH, WIN_HEIGHT);
@@ -98,6 +78,3 @@ int	main(int argc, char *argv[])
 	mlx_loop((*data).mlx);
 	return (0);
 }
-
-// draw_map_top(data);
-// draw_map_iso(data);
