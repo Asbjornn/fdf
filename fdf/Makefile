@@ -35,7 +35,7 @@ ${MINILIBX_A}:
 	@${MAKE} -C ${MINILIBX_DIR}
 
 ${NAME}: ${OBJ} ${LIBFT_A} ${MINILIBX_A}
-	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME} &&  echo "${GREEN}COMPILATION SUCEED"\
+	@${CC} ${CFLAGS} ${OBJ} ${LIBFT_A} ${MINILIBX_A} -lX11 -lXext -lm -o ${NAME} && echo "${GREEN}COMPILATION SUCEED"\
 	"\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n"\
 	"⣿⣿⣿⣿⣿⣿⣿⠛⢩⣴⣶⣶⣶⣌⠙⠫⠛⢋⣭⣤⣤⣤⣤⡙⣿⣿⣿⣿⣿⣿\n"\
 	"⣿⣿⣿⣿⣿⡟⢡⣾⣿⠿⣛⣛⣛⣛⣛⡳⠆⢻⣿⣿⣿⠿⠿⠷⡌⠻⣿⣿⣿⣿\n"\
