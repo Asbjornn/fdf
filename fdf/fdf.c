@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:23:47 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/08 13:25:56 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/09 12:06:25 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	main(int argc, char *argv[])
 
 	if (argc != 2)
 		display_error("format: ./fdf 'file.fdf'", 2);
+	if (check_file(argv[1]))
+		display_error("file cant be open", 2);
 	data = malloc(sizeof(t_data));
 	if (!data)
 		display_error("malloc failed in main", 2);

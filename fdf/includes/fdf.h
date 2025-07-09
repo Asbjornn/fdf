@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:24:30 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/08 13:02:00 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/09 12:00:27 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void		get_z_height(t_map **map);
 int			set_colors(t_point point, t_point point2, int i, t_data *data);
 int			ft_atoc(char *line);
 void		text_projection(t_data *data);
+int			check_file(char *file);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  BONUS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

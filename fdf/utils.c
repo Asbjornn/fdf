@@ -6,7 +6,7 @@
 /*   By: gcauchy <gcauchy@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:08:03 by gcauchy           #+#    #+#             */
-/*   Updated: 2025/07/08 13:26:02 by gcauchy          ###   ########.fr       */
+/*   Updated: 2025/07/09 12:13:43 by gcauchy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,24 @@ int	get_zoom(t_map map)
 		return (10);
 	else
 		return (5);
+}
+
+int	check_file(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		return (1);
+	close (fd);
+	while (*file)
+	{
+		if (*file == '.')
+		{
+			if (ft_strncmp(file, ".fdf", 4) != 0)
+				return (1);
+		}
+		file++;
+	}
+	return (0);
 }
